@@ -1,0 +1,10 @@
+.ipodDisplay {
+  margin: 30px 10px 20px 10px;
+  height: 230px;
+
+  border: 3px solid black;
+  border-radius: 10px; /* Curvy edges for the display */
+  position: relative; /* For positioning the reflection */
+  background-size: cover;
+  overflow: hidden; /* Hide overflow to maintain the frame's appearance */
+}
