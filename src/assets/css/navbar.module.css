@@ -1,0 +1,62 @@
+.navBar {
+  height: 100%;
+  width: 50%; /* Adjust width based on your design */
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.navHeader {
+  padding: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: left;
+}
+
+.navHeader p {
+  padding: 0;
+  margin: 0;
+}
+
+.menuContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0rem 1rem 1rem 1rem;
+  overflow-y: scroll; /* Allows scrolling without showing the scrollbar */
+  flex-grow: 1; /* Allow the menu container to take remaining space */
+  touch-action: none;
+  pointer-events: none;
+}
+
+/* Hide the scrollbar but keep scroll functionality */
+.menuContainer::-webkit-scrollbar {
+  width: 0px; /* Hides the scrollbar */
+  background: transparent; /* Ensure the background is transparent */
+}
+
+.menuItem {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* Ensures space between menu title and arrow */
+  align-items: flex-start; /* Centers the items vertically */ /* Slightly increased padding for better spacing */
+  box-sizing: border-box;
+  font-size: 0.98rem;
+  padding: 0.4rem 0.2rem;
+}
+
+.menuItem img {
+  width: 10px; /* Adjusted size for better visibility */
+  margin-left: 10px; /* Add space between the text and the arrow */
+}
+
+.active {
+  background-color: teal; /* Different color for active item */
+  font-weight: 400;
+  color: #ffffff; /* Ensure text color is visible */
+}
+
+.menuTitle {
+  font-size: 0.9rem;
+}

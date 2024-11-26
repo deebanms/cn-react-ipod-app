@@ -1,0 +1,17 @@
+.displayContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+}
+
+.displayContainer img {
+  width: 100px;
+  height: 100px;
+}
+.displayContainer h4 {
+  padding: 0;
+}

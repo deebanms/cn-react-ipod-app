@@ -1,0 +1,40 @@
+.musicPlayer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  height: 100%;
+}
+
+.musicPlayer img {
+  width: 100px;
+  height: 100px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.albumArtContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.audioContainer {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+}
+
+.musicPlayer input {
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.timeContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
