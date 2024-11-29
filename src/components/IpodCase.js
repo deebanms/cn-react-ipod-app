@@ -24,33 +24,37 @@ export class IpodCase extends Component {
       forward,
       backward,
       handleWallpaper,
+      theme,
     } = this.props;
     return (
-      <div className={styles.ipodCase}>
-        <IpodDisplay
-          menu={menu}
-          showMenu={showMenu}
-          displayContent={displayContent}
-          currentMenu={currentMenu}
-          selectedIndex={selectedIndex}
-          isPlaying={isPlaying}
-          currentSongIndex={currentSongIndex}
-          audioDuration={audioDuration}
-          currentTime={currentTime}
-          audioProgress={audioProgress}
-          handleWallpaper={handleWallpaper}
-        />
-        <CircularButton
-          handleMenu={handleMenu}
-          handleRotation={handleRotation}
-          handleMenuSelect={handleMenuSelect}
-          isPlaying={isPlaying}
-          togglePlayPause={togglePlayPause}
-          playNext={playNext}
-          playPrevious={playPrevious}
-          forward={forward}
-          backward={backward}
-        />
+      <div className={theme === "dark" ? styles.dark : ""}>
+        <div className={styles.ipodCase}>
+          <IpodDisplay
+            menu={menu}
+            showMenu={showMenu}
+            displayContent={displayContent}
+            currentMenu={currentMenu}
+            selectedIndex={selectedIndex}
+            isPlaying={isPlaying}
+            currentSongIndex={currentSongIndex}
+            audioDuration={audioDuration}
+            currentTime={currentTime}
+            audioProgress={audioProgress}
+            handleWallpaper={handleWallpaper}
+            theme={theme}
+          />
+          <CircularButton
+            handleMenu={handleMenu}
+            handleRotation={handleRotation}
+            handleMenuSelect={handleMenuSelect}
+            isPlaying={isPlaying}
+            togglePlayPause={togglePlayPause}
+            playNext={playNext}
+            playPrevious={playPrevious}
+            forward={forward}
+            backward={backward}
+          />
+        </div>
       </div>
     );
   }

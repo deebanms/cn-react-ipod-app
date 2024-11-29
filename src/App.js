@@ -11,6 +11,7 @@ class App extends Component {
       currentSongIndex: 0,
       isPlaying: false,
       audioElement: null, // Lazy initialization for audio
+      audioSrc: null,
       menu: this.createMenu(), // Generates the initial menu structure
       showMenu: false,
       currentMenu: [],
@@ -22,6 +23,7 @@ class App extends Component {
       audioProgress: 0,
       intervalId: null,
       bg: "https://images.pexels.com/photos/443446/pexels-photo-443446.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      theme: "light",
     };
   }
 
@@ -46,7 +48,13 @@ class App extends Component {
     {
       title: "Settings",
       menu: [
-        { title: "Change Theme" },
+        {
+          title: "Change Theme",
+          menu: [
+            { title: "Light", type: "Themes" },
+            { title: "Dark", type: "Themes" },
+          ],
+        },
         { title: "Change Wallpaper", menu: wallpaper },
       ],
     },
@@ -58,62 +66,6 @@ class App extends Component {
       currentMenu: this.state.menu,
     });
   }
-
-  // handleMenuSelect = () => {
-  //   const { showMenu, currentMenu, selectedIndex, audioElement } = this.state;
-
-  //   if (!showMenu) return;
-
-  //   const selectedMenu = currentMenu?.[selectedIndex];
-  //   if (!selectedMenu) {
-  //     console.error("Invalid menu state or selection.");
-  //     return;
-  //   }
-
-  //   // Handle non-navigable items
-  //   if (!selectedMenu.menu) {
-  //     const { type, audio } = selectedMenu;
-
-  //     switch (type) {
-  //       case "Cover Flow":
-  //       case "Games":
-  //         this.setState({ displayContent: type, showMenu: false });
-  //         break;
-
-  //       case "Change Wallpaper":
-  //         console.log("Change Wallpaper selected. Implement logic here.");
-  //         break;
-
-  //       case "Songs":
-  //         if (audioElement) {
-  //           audioElement.pause();
-  //         }
-
-  //         const newAudio = new Audio(audio);
-  //         this.setState(
-  //           {
-  //             audioElement: newAudio,
-  //             audioProgress: 0,
-  //             displayContent: "Songs",
-  //             showMenu: false,
-  //           },
-  //           this.playAudio // Ensure playAudio is bound to the correct context
-  //         );
-  //         break;
-
-  //       default:
-  //         console.warn(`Unhandled menu type: ${type}`);
-  //     }
-  //     return;
-  //   }
-
-  //   // Navigate to a submenu
-  //   this.setState((prevState) => ({
-  //     currentMenu: selectedMenu.menu,
-  //     navigationStack: [...prevState.navigationStack, prevState.currentMenu],
-  //     selectedIndex: 0,
-  //   }));
-  // };
 
   handleMenuSelect = () => {
     const { showMenu, currentMenu, selectedIndex } = this.state;
@@ -139,7 +91,8 @@ class App extends Component {
   // Helper function for non-navigable menu handling
   handleNonNavigableMenu = (menuItem) => {
     const { type, audio } = menuItem;
-    const { audioElement } = this.state;
+    const { audioElement, audioSrc } = this.state;
+    console.log(menuItem);
 
     const menuTypeActions = {
       "Cover Flow": () =>
@@ -152,11 +105,15 @@ class App extends Component {
           bg: menuItem.image,
         }),
       Songs: () => {
+        const newAudio = new Audio(audio);
         if (audioElement) {
+          if (newAudio.src === audioSrc) {
+            this.setState({ showMenu: false, displayContent: "Songs" });
+            return;
+          }
           audioElement.pause();
         }
 
-        const newAudio = new Audio(audio);
         this.setState(
           {
             audioElement: newAudio,
@@ -167,6 +124,10 @@ class App extends Component {
           this.playAudio // Play audio after state update
         );
       },
+      Themes: () =>
+        this.setState({ theme: menuItem.title.toLowerCase() }, () => {
+          console.log(this.state.theme);
+        }),
     };
 
     const action = menuTypeActions[type];
@@ -189,12 +150,15 @@ class App extends Component {
   playAudio = () => {
     const { audioElement } = this.state;
     if (audioElement) {
-      audioElement.play();
-      const intervalId = setInterval(this.updateProgress, 1000);
-      this.setState({
-        isPlaying: true,
-        intervalId,
-      });
+      setTimeout(() => {
+        const intervalId = setInterval(this.updateProgress, 1000);
+        this.setState({
+          isPlaying: true,
+          intervalId,
+          audioSrc: audioElement.src,
+        });
+        audioElement.play();
+      }, 0);
     }
   };
 
@@ -254,7 +218,8 @@ class App extends Component {
   // Function to handle circular menu rotation based on the angle of rotation selectedIndex is updated and the selected Index should be positive
 
   handleRotation = (rotationAngle) => {
-    const { currentMenu } = this.state;
+    const { currentMenu, showMenu } = this.state;
+    if (!showMenu) return;
 
     // Ensure currentMenu is not empty to avoid division-by-zero errors
     const totalItems = currentMenu.length;
@@ -305,11 +270,18 @@ class App extends Component {
     const formattedCurrentTime = this.formatTime(currentTime);
     const formattedDuration = this.formatTime(duration);
 
-    this.setState({
-      currentTime: formattedCurrentTime,
-      audioDuration: formattedDuration,
-      audioProgress: (currentTime / duration) * 100, // Update progress bar
-    });
+    this.setState(
+      {
+        currentTime: formattedCurrentTime,
+        audioDuration: formattedDuration,
+        audioProgress: (currentTime / duration) * 100, // Update progress bar
+      },
+      () => {
+        if (currentTime >= duration) {
+          this.playNext();
+        }
+      }
+    );
   };
 
   formatTime = (seconds) => {
@@ -319,7 +291,8 @@ class App extends Component {
   };
 
   playNext = () => {
-    const { selectedIndex, audioElement, currentMenu } = this.state;
+    const { selectedIndex, audioElement, currentMenu, isPlaying } = this.state;
+    if (!isPlaying) return;
     if (audioElement) audioElement.pause();
     const newIndex = (selectedIndex + 1) % currentMenu.length;
     const newAudio = new Audio(currentMenu[newIndex].audio);
@@ -333,7 +306,8 @@ class App extends Component {
   };
 
   playPrevious = () => {
-    const { selectedIndex, audioElement, currentMenu } = this.state;
+    const { selectedIndex, audioElement, currentMenu, isPlaying } = this.state;
+    if (!isPlaying) return;
     if (audioElement) audioElement.pause();
     const newIndex =
       (selectedIndex - 1 + currentMenu.length) % currentMenu.length;
@@ -420,6 +394,7 @@ class App extends Component {
       audioProgress,
       audioElement,
       bg,
+      theme,
     } = this.state;
     return (
       <IpodCase
@@ -443,6 +418,7 @@ class App extends Component {
         forward={this.forward}
         backward={this.backward}
         handleWallpaper={bg}
+        theme={theme}
       />
     );
   }
