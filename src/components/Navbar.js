@@ -34,7 +34,7 @@ class Navbar extends Component {
   render() {
     const { currentMenu, selectedIndex } = this.props;
     const activeMenu = currentMenu[selectedIndex]?.title;
-    const title = currentMenu[selectedIndex]?.menu ? activeMenu : "Ipod.js";
+    const title = "Ipod.js";
 
     return (
       <div className={styles.navBar}>

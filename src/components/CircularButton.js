@@ -17,13 +17,17 @@ class CircularButton extends Component {
   }
 
   handlePointerDown = (e) => {
-    // Ensure that rotation starts only if the target is the main container div
     if (e.target !== e.currentTarget) return;
 
-    e.preventDefault(); // Prevent default behavior like text selection
+    e.preventDefault();
     e.stopPropagation();
     this.setState({ isRotating: true });
-    this.lastAngle = this.getAngleFromPointer(e); // Store the initial angle
+    this.lastAngle = this.getAngleFromPointer(e);
+
+    // Handle touch devices as well
+    if (e.type === "touchstart") {
+      e.preventDefault(); // Prevent default for touch devices
+    }
   };
 
   handlePointerMove = (e) => {
