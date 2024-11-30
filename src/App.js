@@ -36,12 +36,14 @@ class App extends Component {
         {
           title: "All Songs",
           menu: songs,
+          navTitle: "Music",
         },
         {
           title: "Artists",
           menu: artists,
+          navTitle: "Music",
         },
-        { title: "Albums", menu: albums },
+        { title: "Albums", menu: albums, navTitle: "Music" },
       ],
     },
     { title: "Games", type: "Games" },
@@ -50,12 +52,13 @@ class App extends Component {
       menu: [
         {
           title: "Change Theme",
+          navTitle: "Settings",
           menu: [
-            { title: "Light", type: "Themes" },
-            { title: "Dark", type: "Themes" },
+            { title: "Light", type: "Themes", navTitle: "Settings" },
+            { title: "Dark", type: "Themes", navTitle: "Settings" },
           ],
         },
-        { title: "Change Wallpaper", menu: wallpaper },
+        { title: "Change Wallpaper", menu: wallpaper, navTitle: "Settings" },
       ],
     },
   ];
@@ -319,50 +322,6 @@ class App extends Component {
       audioElement: newAudio,
       isPlaying: true,
     });
-  };
-
-  forward = () => {
-    const { audioElement } = this.state;
-    console.log(audioElement);
-
-    if (
-      audioElement &&
-      isFinite(audioElement.currentTime) &&
-      isFinite(audioElement.duration)
-    ) {
-      // Safely update the current time
-      audioElement.currentTime = Math.min(
-        audioElement.currentTime + 10,
-        audioElement.duration
-      );
-
-      // Update the current time state with a formatted string
-      this.setState({
-        currentTime: this.formatTime(audioElement.currentTime),
-      });
-    } else {
-      console.error("Invalid audio element or time/duration values");
-    }
-  };
-
-  backward = () => {
-    const { audioElement } = this.state;
-
-    if (
-      audioElement &&
-      isFinite(audioElement.currentTime) &&
-      isFinite(audioElement.duration)
-    ) {
-      // Safely update the current time
-      audioElement.currentTime = Math.max(audioElement.currentTime - 10, 0);
-
-      // Update the current time state with a formatted string
-      this.setState({
-        currentTime: this.formatTime(audioElement.currentTime),
-      });
-    } else {
-      console.error("Invalid audio element or time/duration values");
-    }
   };
 
   componentWillUnmount() {

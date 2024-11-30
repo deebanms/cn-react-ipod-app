@@ -14,6 +14,7 @@ export const songs = [
   {
     id: 1,
     title: "Alone",
+    navTitle: "Music",
     audio: aloneSong,
     image: aloneImg,
     artist: "Alan Walker",
@@ -23,6 +24,7 @@ export const songs = [
   {
     id: 2,
     title: "Faded",
+    navTitle: "Music",
     audio: fadedSong,
     image: fadedImg,
     artist: "Alan Walker",
@@ -32,6 +34,7 @@ export const songs = [
   {
     id: 3,
     title: "Blinding Lights",
+    navTitle: "Music",
     audio: blindingSong,
     image: blindingImg,
     artist: "The Weeknd",
@@ -41,6 +44,7 @@ export const songs = [
   {
     id: 4,
     title: "See You Again",
+    navTitle: "Music",
     audio: seeYouSong,
     image: seeYouImg,
     artist: "Wiz Khalifa",
@@ -50,6 +54,7 @@ export const songs = [
   {
     id: 5,
     title: "Shape of You",
+    navTitle: "Music",
     audio: shapeOfYouSong,
     image: shapeOfYouImg,
     artist: "Ed Sheeran",
@@ -69,6 +74,7 @@ const groupByKeyAsMenu = (songs, key) => {
         title: keyValue, // Rename the grouping key to 'title'
         menu: [],
         type: key,
+        navTitle: "Music",
       });
     }
     map.get(keyValue).menu.push({
@@ -76,6 +82,7 @@ const groupByKeyAsMenu = (songs, key) => {
       title: song.title,
       audio: song.audio,
       image: song.image,
+      navTitle: "Music",
       [key === "artist" ? "album" : "artist"]:
         key === "artist" ? song.album : song.artist,
     });
